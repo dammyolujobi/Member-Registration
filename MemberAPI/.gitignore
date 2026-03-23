@@ -1,0 +1,29 @@
+# Build output
+bin/
+obj/
+
+# User-specific files
+*.user
+*.rsuser
+*.suo
+
+# Visual Studio / VS Code
+.vs/
+.vscode/
+
+# Logs
+*.log
+
+# Runtime and temporary files
+*.pid
+*.seed
+*.pid.lock
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Local environment and secrets
+appsettings.Local.json
+appsettings.*.local.json
+secrets.json
