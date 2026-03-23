@@ -37,7 +37,7 @@ public class MembersController : ControllerBase
     public async Task<IActionResult> Create(Member member)
     {
         var created = await _repo.CreateAsync(member);
-        return CreatedAtAction(nameof(GetById), new { id = created.id }, created);
+        return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
     }
 
     [HttpDelete("{id}")]

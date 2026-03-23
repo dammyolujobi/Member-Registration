@@ -22,22 +22,22 @@ public class MemberRepository
     {
         using var conn = GetConnection();
         return await conn.QueryAsync<Member>(
-            "SELECT id, FullName, email as Email, phoneNumber as PhoneNumber, datejoined as DateJoined,is_active as isActive FROM members" 
+            "SELECT id as Id, first_name as FirstName,last_name as LastName, email as Email, phoneNumber as PhoneNumber, datejoined as DateJoined,is_active as IsActive FROM members" 
         );
     }
-    public async Task<Member?> FindByName(string fullname)
+    public async Task<Member?> FindByName(string firstname)
     {
         using var conn = GetConnection();
         return await conn.QueryFirstOrDefaultAsync<Member>(
-            "SELECT id, FullName, email as Email, phoneNumber as PhoneNumber, datejoined as DateJoined,is_active as isActive FROM members where FullName = @FullName",
-            new{fullname = fullname}
+            "SELECT id as Id, first_name as FirstName,last_name as LastName, email as Email, phoneNumber as PhoneNumber, datejoined as DateJoined,is_active as IsActive FROM members where first_name = @FirstName",
+            new{firstname = firstname}
         );
     }
     public async Task<Member?> GetByIdAsync(int id)
     {
         using var conn = GetConnection();
         return await conn.QueryFirstOrDefaultAsync<Member>(
-            "SELECT id, FullName, email as Email, phoneNumber as PhoneNumber, datejoined as DateJoined,is_active as isActive FROM members where id = @id",
+            "SELECT id as Id, first_name as FirstName,last_name as LastName, email as Email, phoneNumber as PhoneNumber, datejoined as DateJoined,is_active as IsActive FROM members where id = @Id",
             new {id = id}
         );
     }
@@ -47,12 +47,12 @@ public class MemberRepository
         using var conn = GetConnection();
 
         var id = await conn.ExecuteScalarAsync<int>(
-            @"INSERT INTO members(FullName,email,phoneNumber)
-            VALUES(@FullName,@Email,@PhoneNumber)
+            @"INSERT INTO members(first_name,last_name,email,phoneNumber)
+            VALUES(@FirstName,@LastName,@Email,@PhoneNumber)
             RETURNING id",
             member
         );
-        member.id = id;
+        member.Id = id;
         return member;
     }
 
@@ -61,7 +61,7 @@ public class MemberRepository
         using var conn = GetConnection();
 
         var rows = await conn.ExecuteAsync(
-            @"UPDATE members SET FullName = @FullName, email = @Email, phoneNumber = @PhoneNumber,is_active = @isActive 
+            @"UPDATE members SET first_name = @FirstName,last_name = @LastName, email = @Email, phoneNumber = @PhoneNumber,is_active = @IsActive 
             WHERE id = @id",
             member
         );
@@ -73,7 +73,7 @@ public class MemberRepository
         using var conn = GetConnection();
 
         var rows = await conn.ExecuteAsync(
-            "DELETE FROM members WHERE id = @id",
+            "DELETE FROM members WHERE id = @Id",
             new{id = id}
         );
 
