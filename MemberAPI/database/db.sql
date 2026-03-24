@@ -5,20 +5,27 @@ CREATE TABLE IF NOT EXISTS member(
     last_name TEXT NOT NULL,
     email TEXT NOT NULL,
     phoneNumber TEXT NOT NULL,
-    is_active BOOLEAN,
+    is_active BOOLEAN NOT NULL,
     branch_id INT NOT NULL REFERENCES branches(id) ON DELETE CASCADE,
     datejoined TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+
+
+
+
 
 
 CREATE TABLE IF NOT EXISTS church (
     id SERIAL PRIMARY KEY NOT NULL,
     name TEXT NOT NULL,
     location TEXT NOT NULL,
+    password TEXT NOT NULL,
+    phone_no TEXT NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE branches (
+
+CREATE TABLE IF NOT EXISTS branches (
     id SERIAL PRIMARY KEY NOT NULL,
     church_id INT NOT NULL REFERENCES church(id) ON DELETE CASCADE,
     name TEXT NOT NULL,

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MemberAPI.Models;
 using MemberAPI.Repositories;
+using BCrypt.Net;
 
 namespace MemberAPI.Controllers;
 
@@ -29,6 +30,7 @@ public class ChurchController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create(Church church)
     {
+        church.Password = BCrypt.Net.BCrypt.HashPassword(church.Password);
         var created = await _repo.CreateAsync(church);
         return CreatedAtAction(nameof(GetById), new{id = created.Id}, created);
     }
@@ -46,5 +48,5 @@ public class ChurchController : ControllerBase
         var deleted = await _repo.DeleteAsync(id);
         return deleted ? NoContent() : NotFound();
     }
-
+    
 }
