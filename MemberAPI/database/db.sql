@@ -5,14 +5,10 @@ CREATE TABLE IF NOT EXISTS member(
     last_name TEXT NOT NULL,
     email TEXT NOT NULL,
     phoneNumber TEXT NOT NULL,
-    is_active BOOLEAN NOT NULL,
+    is_active BOOLEAN,
     branch_id INT NOT NULL REFERENCES branches(id) ON DELETE CASCADE,
     datejoined TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
-
-ALTER TABLE member DROP COLUMN FullName;
-ALTER TABLE member ADD COLUMN first_name TEXT,
-ADD COLUMN last_name TEXT;
 
 
 CREATE TABLE IF NOT EXISTS church (

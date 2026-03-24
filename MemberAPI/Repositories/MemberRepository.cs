@@ -1,8 +1,7 @@
 using Dapper;
 using Npgsql;
 using MemberAPI.Models;
-using Microsoft.AspNetCore.Identity;
-using System.Drawing;
+
 
 namespace MemberAPI.Repositories;
 
@@ -22,14 +21,14 @@ public class MemberRepository
     {
         using var conn = GetConnection();
         return await conn.QueryAsync<Member>(
-            "SELECT id as Id, first_name as FirstName,last_name as LastName, email as Email, phoneNumber as PhoneNumber, datejoined as DateJoined,is_active as IsActive FROM members" 
+            "SELECT id as Id, first_name as FirstName,last_name as LastName, email as Email, phoneNumber as PhoneNumber, datejoined as DateJoined,is_active as IsActive FROM member" 
         );
     }
     public async Task<Member?> FindByName(string firstname)
     {
         using var conn = GetConnection();
         return await conn.QueryFirstOrDefaultAsync<Member>(
-            "SELECT id as Id, first_name as FirstName,last_name as LastName, email as Email, phoneNumber as PhoneNumber, datejoined as DateJoined,is_active as IsActive FROM members where first_name = @FirstName",
+            "SELECT id as Id, first_name as FirstName,last_name as LastName, email as Email, phoneNumber as PhoneNumber, datejoined as DateJoined,is_active as IsActive FROM member WHERE first_name = @FirstName",
             new{firstname = firstname}
         );
     }
@@ -37,7 +36,7 @@ public class MemberRepository
     {
         using var conn = GetConnection();
         return await conn.QueryFirstOrDefaultAsync<Member>(
-            "SELECT id as Id, first_name as FirstName,last_name as LastName, email as Email, phoneNumber as PhoneNumber, datejoined as DateJoined,is_active as IsActive FROM members where id = @Id",
+            "SELECT id as Id, first_name as FirstName,last_name as LastName, email as Email, phoneNumber as PhoneNumber, datejoined as DateJoined,is_active as IsActive FROM member where id = @Id",
             new {id = id}
         );
     }
@@ -47,8 +46,8 @@ public class MemberRepository
         using var conn = GetConnection();
 
         var id = await conn.ExecuteScalarAsync<int>(
-            @"INSERT INTO members(first_name,last_name,email,phoneNumber)
-            VALUES(@FirstName,@LastName,@Email,@PhoneNumber)
+            @"INSERT INTO member(first_name,last_name,email,phoneNumber,is_active)
+            VALUES(@FirstName,@LastName,@Email,@PhoneNumber,@IsActive)
             RETURNING id",
             member
         );
@@ -61,7 +60,7 @@ public class MemberRepository
         using var conn = GetConnection();
 
         var rows = await conn.ExecuteAsync(
-            @"UPDATE members SET first_name = @FirstName,last_name = @LastName, email = @Email, phoneNumber = @PhoneNumber,is_active = @IsActive 
+            @"UPDATE member SET first_name = @FirstName,last_name = @LastName, email = @Email, phoneNumber = @PhoneNumber,is_active = @IsActive 
             WHERE id = @id",
             member
         );
@@ -73,7 +72,7 @@ public class MemberRepository
         using var conn = GetConnection();
 
         var rows = await conn.ExecuteAsync(
-            "DELETE FROM members WHERE id = @Id",
+            "DELETE FROM member WHERE id = @Id",
             new{id = id}
         );
 
